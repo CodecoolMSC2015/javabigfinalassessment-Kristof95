@@ -6,11 +6,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import personclasses.Person;
 
 public class CSVDataReader extends DataReader
 {
-	public String csvFilePath = "C:\\Users\\Kristof\\Desktop\\JAVA%20BFA\\javabigfinalassessment-Kristof95\\Documentation\\persons.csv";
+	public String csvFilePath = "";
 	List<Person> persons;
 	
 	
@@ -20,24 +21,28 @@ public class CSVDataReader extends DataReader
 	}
 
 
+	@SuppressWarnings("resource")
 	@Override
 	public Set<Person> getPersons()
 	{
+		PersonStoreServerSocket personStoreServerSocket = new PersonStoreServerSocket();
 		BufferedReader bufferedReader;
 		String line = "";
+		String receivedObject = (String)personStoreServerSocket.receivedObject();
+		Set<String> set;
+		Set<Person> persons = new HashSet<Person>();
 		try
 		{
 			bufferedReader = new BufferedReader(new FileReader(csvFilePath));
 			while ((line = bufferedReader.readLine()) != null)
 			{
 				String[] tokens = line.split(",");
-				Set<String> set = new HashSet<String>(Arrays.asList(tokens));
-				if(set.contains(""))
+				set = new HashSet<String>(Arrays.asList(tokens));
+				if(set.contains(receivedObject))
 				{
-					return null;
+					System.out.println(set);
 				}
 			}
-			
 		}
 		catch (Exception e)
 		{
@@ -62,5 +67,11 @@ public class CSVDataReader extends DataReader
 		
 	}
 	
-	
+	public static void main(String[] args)
+	{
+		CSVDataReader csdr = new CSVDataReader("C:\\Users\\Kristof\\Desktop\\JAVA BFA\\javabigfinalassessment-Kristof95\\Documentation\\persons.csv");
+		csdr.getPersons();
+		
+		
+	}
 }

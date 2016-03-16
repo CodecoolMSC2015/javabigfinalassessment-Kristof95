@@ -21,10 +21,16 @@ public class searchServlet extends HttpServlet
 	{
 		String searchCriteria = request.getParameter("search");
 		String radio1 = (String) request.getParameter("searchtype");
+		
 		SocketClient clientSocket;
+		
 		if(searchCriteria != null)
 		{
 			clientSocket = new SocketClient("localhost",4444,searchCriteria);
+			if(clientSocket.getResult() != null)
+			{
+				response.getWriter().append(clientSocket.getResult());				
+			}
 		}
 	}
 
